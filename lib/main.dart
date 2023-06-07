@@ -21,8 +21,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: Routes.authScreen,
+      initialRoute: Routes.homeScreen,
       getPages: Routes.pages,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: Scaffold(
+            body: GestureDetector(
+              onTap: () {
+                  var currentFocus = FocusScope.of(context);
+                  if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                    FocusManager.instance.primaryFocus!.unfocus();
+                  }
+              },
+              child: child,
+            ),
+          ),
+        );
+      },
     );
   }
 }
+
