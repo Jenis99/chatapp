@@ -23,19 +23,21 @@ class CreateGroupController extends GetxController{
     await FirebaseFirestore.instance.collection(Constant.groupKey).doc(groupId).set({
       "members": memberList,
       "id": groupId,
+    }).then((value){
+      print("value after created Group");
     });
 
     for (int i = 0; i < memberList.length; i++) {
       String uid = memberList[i]['uid'];
-
+      print("UID-------->$uid");
       await FirebaseFirestore.instance
-          .collection(Constant.userIdKey)
+          .collection(Constant.userDataCollection)
           .doc(uid)
           .collection(Constant.groupKey)
           .doc(groupId)
           .set({
-        "name": groupName.text,
-        "id": groupId,
+        "groupName": groupName.text,
+        "groupId": groupId,
       });
     }
 

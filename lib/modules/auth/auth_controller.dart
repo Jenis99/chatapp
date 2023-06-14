@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
+  
   final FirebaseAuth auth = FirebaseAuth.instance;
   RxString userEmail = "".obs;
   RxString userName = "".obs;
@@ -14,8 +15,13 @@ class AuthController extends GetxController {
   RxString userId = "".obs;
   RxBool isLoading=false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+  }
+  
   Future<void> loginWithGoogle() async {
-
+    isLoading.value=true;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
     if (googleSignInAccount != null) {
@@ -38,8 +44,7 @@ class AuthController extends GetxController {
           .get()
           .then((documents) async {
         if (documents.docs.isEmpty) {
-          isLoading.value=true;
-          await FirebaseFirestore.instance.collection(Constant.userDataCollection).add({
+          await FirebaseFirestore.instance.collection(Constant.userDataCollection).doc(userId.value).set({
             Constant.userNameKey: userName.value,
             Constant.userEmailKey: userEmail.value,
             Constant.userProfileUrlKey: userProfile.value,
@@ -49,8 +54,8 @@ class AuthController extends GetxController {
               AppPreference.setString(Constant.userEmailKey, userEmail.value);
               AppPreference.setString(Constant.userNameKey, userName.value);
               AppPreference.setString(Constant.userProfileUrlKey, userProfile.value);
-              AppPreference.setString(Constant.userIdKey, userId.value);
-              AppPreference.setString(Constant.senderIdKey, value.id);
+              AppPreference.setString(Constant.senderIdKey, userId.value);
+              AppPreference.setBoolean(Constant.isLoginKey, value: true);
             },
           );
           isLoading.value=false;
@@ -61,6 +66,7 @@ class AuthController extends GetxController {
           AppPreference.setString(Constant.userProfileUrlKey, userProfile.value);
           AppPreference.setString(Constant.userIdKey, userId.value);
           AppPreference.setString(Constant.senderIdKey, documents.docs.first.id);
+          AppPreference.setBoolean(Constant.isLoginKey, value: true);
           Get.toNamed(Routes.homeScreen);
         }
       });

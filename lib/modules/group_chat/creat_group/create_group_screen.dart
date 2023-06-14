@@ -2,8 +2,8 @@ import 'package:chatapp/modules/group_chat/creat_group/create_group_cotroller.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CreateGroup extends StatelessWidget {
-   CreateGroup({super.key});
+class CreateGroupScreen extends StatelessWidget {
+   CreateGroupScreen({super.key});
    final CreateGroupController _createGroupController=Get.put(CreateGroupController());
   bool isLoading = false;
 

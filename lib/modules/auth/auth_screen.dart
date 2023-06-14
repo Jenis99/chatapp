@@ -14,11 +14,15 @@ class AuthScreen extends StatelessWidget {
       ),
       body: Center(
         child: Obx(
-          () => ElevatedButton(
-              onPressed: () {
-                _authController.loginWithGoogle();
-              },
-              child: _authController.isLoading.value ? const CircularProgressIndicator() : const Text("Google",)),
+          () => _authController.isLoading.value
+              ? const CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: () {
+                    _authController.loginWithGoogle();
+                  },
+                  child: const Text(
+                    "Google",
+                  )),
         ),
       ),
     );

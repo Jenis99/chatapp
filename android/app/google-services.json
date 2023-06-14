@@ -1,48 +1,40 @@
 {
   "project_info": {
-    "project_number": "1089053793158",
-    "project_id": "chatapp-ca7bd",
-    "storage_bucket": "chatapp-ca7bd.appspot.com"
+    "project_number": "548461450344",
+    "project_id": "notification-demo-95be7",
+    "storage_bucket": "notification-demo-95be7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1089053793158:android:04796af11202945030aa07",
+        "mobilesdk_app_id": "1:548461450344:android:1f0733aa70e232a145d7dd",
         "android_client_info": {
-          "package_name": "com.example.chatapp"
+          "package_name": "com.example.noti.firebase_notification_demo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1089053793158-6t8u0r0em4rg8r4nse057po6o4lclb78.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.chatapp",
-            "certificate_hash": "02de162202206f8a5e35597d3d5d84bbae339693"
-          }
-        },
-        {
-          "client_id": "1089053793158-d4ct9g86e4s9svs5am8va83eibk77v20.apps.googleusercontent.com",
+          "client_id": "548461450344-iilgt05l967i5nl83d4d9co307a6b2ri.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDE57yNz-6WqCCRplOwnynWuYHfCcPJ1Co"
+          "current_key": "AIzaSyAJdCQ8d2WiKxtGQd8egwsQEFKa63Dqzm4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1089053793158-d4ct9g86e4s9svs5am8va83eibk77v20.apps.googleusercontent.com",
+              "client_id": "548461450344-iilgt05l967i5nl83d4d9co307a6b2ri.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1089053793158-o3lgmt6r4g94bfu3obf11941h5un4t2o.apps.googleusercontent.com",
+              "client_id": "548461450344-83cqcs2lpdvt2cn8060lde0gle4v21nn.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.chatapp"
+                "bundle_id": "com.example.noti.firebaseNotificationDemo"
               }
             }
           ]

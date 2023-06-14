@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class AddMemberController extends GetxController {
-  Map<String, dynamic>? userMap;
+  RxMap userMap={}.obs;
   RxBool isLoading = false.obs;
   RxString searchedData = "".obs;
   RxList<Map<String, dynamic>> membersList = <Map<String, dynamic>>[].obs;
@@ -34,20 +34,20 @@ class AddMemberController extends GetxController {
     bool isAlreadyExist = false;
 
     for (int i = 0; i < membersList.length; i++) {
-      if (membersList[i]['uid'] == userMap!['userId']) {
+      if (membersList[i]['uid'] == userMap['userId']) {
         isAlreadyExist = true;
       }
     }
 
     if (!isAlreadyExist) {
       membersList.add({
-        "name": userMap!['userName'],
-        "email": userMap!['userEmail'],
-        "uid": userMap!['userId'],
+        "name": userMap['userName'],
+        "email": userMap['userEmail'],
+        "uid": userMap['userId'],
         "isAdmin": false,
       });
-      userMap?.remove(userMap?[0]);
-      print("membersList.length----------------${membersList.length}");
+      userMap.clear();
+      print("membersList.length----------------${userMap}");
     }
   }
 
@@ -57,17 +57,19 @@ class AddMemberController extends GetxController {
       membersList.removeAt(index);
     }
   }
+  void removeFromUserMap() {
+    userMap.clear();
+  }
 
   void onSearch() async {
-    print("userEmail before Searched-----${searchController.text}");
     isLoading.value = true;
     await FirebaseFirestore.instance
         .collection(Constant.userDataCollection)
-        .where(Constant.userEmailKey, isEqualTo: searchController.text)
+        .where(Constant.userEmailKey, isEqualTo: searchController.text.trim())
         .get()
         .then((value) {
-      print("userEmail before Searched-----${value.docs[0].data()}");
-      userMap = value.docs[0].data();
+          print("Get data From Firebase called$value");
+      userMap.value = value.docs[0].data();
       isLoading.value = false;
       print("userMap====>$userMap");
     });

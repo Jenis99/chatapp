@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: Routes.homeScreen,
+      initialRoute: Routes.splashScreen,
       getPages: Routes.pages,
       builder: (context, child) {
         return MediaQuery(

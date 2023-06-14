@@ -1,82 +1,50 @@
-import 'package:chatapp/modules/group_chat/creat_group/add_member.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:chatapp/modules/group_chat/add_member/add_member_screen.dart';
+import 'package:chatapp/modules/group_chat/group_home/group_home_controller.dart';
+import 'package:chatapp/util/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class GroupChatHomeScreen extends StatefulWidget {
-  const GroupChatHomeScreen({Key? key}) : super(key: key);
-
-  @override
-  _GroupChatHomeScreenState createState() => _GroupChatHomeScreenState();
-}
-
-class _GroupChatHomeScreenState extends State<GroupChatHomeScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  bool isLoading = true;
-
-  List groupList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    getAvailableGroups();
-  }
-
-  void getAvailableGroups() async {
-    String uid = _auth.currentUser!.uid;
-
-    await _firestore
-        .collection('users')
-        .doc(uid)
-        .collection('groups')
-        .get()
-        .then((value) {
-      setState(() {
-        groupList = value.docs;
-        isLoading = false;
-      });
-    });
-  }
+class GroupChatHomeScreen extends StatelessWidget {
+  GroupChatHomeScreen({Key? key}) : super(key: key);
+  final GroupHomeController _groupHomeController = Get.put(GroupHomeController());
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Groups"),
       ),
-      body: isLoading
-          ? Container(
-        height: size.height,
-        width: size.width,
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
-      )
+      body: Obx(() => _groupHomeController.isLoading.value
+          ? Center(child: CircularProgressIndicator())
           : ListView.builder(
-        itemCount: groupList.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-             onTap: () {},
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (_) => GroupChatRoom(
-            //       groupName: groupList[index]['name'],
-            //       groupChatId: groupList[index]['id'],
-            //     ),
-            //   ),
-            // ),
-            leading: Icon(Icons.group),
-            title: Text(groupList[index]['name']),
-          );
-        },
-      ),
+              itemCount: _groupHomeController.groupList.length,
+              itemBuilder: (context, index) {
+                if (_groupHomeController.groupList.isNotEmpty) {
+                  return ListTile(
+                    onTap: () {
+                      var arg={
+                        "groupName": _groupHomeController.groupList[index]['groupName'],
+                        "groupId": _groupHomeController.groupList[index]['groupId'],
+                      };
+                      Get.toNamed(Routes.groupChatScreen,arguments: arg);
+                    },
+                    leading: Icon(Icons.group),
+                    title: Text(_groupHomeController.groupList[index]['groupName']),
+                  );
+                  // ),
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            )),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.create),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => AddMemberInGroup(),
+            builder: (_) => AddMemberScreen(),
           ),
         ),
         tooltip: "Create Group",

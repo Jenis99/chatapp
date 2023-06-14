@@ -23,7 +23,7 @@ class HomeController extends GetxController{
 
   signOut() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
-
+    AppPreference.setBoolean(Constant.isLoginKey, value: false);
     await googleSignIn.signOut();
     // await FirebaseAuth.instance.signOut();
   }
