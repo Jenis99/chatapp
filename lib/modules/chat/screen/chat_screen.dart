@@ -35,7 +35,7 @@ class ChatScreen extends StatelessWidget {
               if (snapshot.hasData) {
                 if (snapshot.data!.size <= 0) {
                   return const Center(
-                    child: Text("There is No Data"),
+                    child: Text("There is no data"),
                   );
                 } else {
                   return ListView(

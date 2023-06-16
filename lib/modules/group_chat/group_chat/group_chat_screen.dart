@@ -4,6 +4,7 @@ import 'package:chatapp/util/app_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class GroupChatScreen extends StatelessWidget {
   GroupChatScreen({Key? key}) : super(key: key);
@@ -23,7 +24,9 @@ class GroupChatScreen extends StatelessWidget {
           title: Text(_groupChatController.groupData["groupName"]),
           centerTitle: true,
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
+            IconButton(onPressed: () {
+              Get.toNamed("");
+            }, icon: Icon(Icons.more_vert)),
           ],
         ),
         body: Column(
@@ -44,9 +47,13 @@ class GroupChatScreen extends StatelessWidget {
                     );
                   } else {
                     return ListView(
-                        reverse: true,
                         controller: _groupChatController.scrollController,
                         children: snapshot.data!.docs.map((documents) {
+                          var time=documents[Constant.timeStampKey];
+                          //var dt = DateTime.fromMillisecondsSinceEpoch(time);
+                          // var d12 = DateFormat('MM/dd/yyyy, hh:mm a').format(dt);
+                          var date = DateTime.fromMillisecondsSinceEpoch(time);
+                          String formattedTime = DateFormat.jm().format(date);
                           return GestureDetector(
                             onTap: () {},
                             child: Container(
@@ -63,11 +70,19 @@ class GroupChatScreen extends StatelessWidget {
                                   margin: const EdgeInsets.all(5.0),
                                   padding: const EdgeInsets.all(10.0),
                                   child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(documents["sendBy"],style: TextStyle(
-                                        color: Colors.grey
+                                        color: Colors.grey,
+                                        fontSize: 10
                                       ),),
                                       Text(documents[Constant.messageKey]),
+                                      Padding(
+                                        padding:  EdgeInsets.only(left: 18.0),
+                                        child: Text(formattedTime,style: TextStyle(
+                                          fontSize: 8,
+                                        ),textAlign: TextAlign.start),
+                                      ),
                                     ],
                                   )),
                             ),
@@ -147,6 +162,7 @@ class GroupChatScreen extends StatelessWidget {
                               ),
                               onPressed: () {
                                 _groupChatController.onSendMessage();
+
                               },
                             ),
                           ),

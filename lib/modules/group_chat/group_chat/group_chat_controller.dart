@@ -22,9 +22,9 @@ class GroupChatController extends GetxController{
     if (groupChatTextController.text.isNotEmpty) {
       Map<String, dynamic> chatData = {
         "sendBy": auth.currentUser!.displayName,
-        "message": groupChatTextController.text,
+        "message": groupChatTextController.text.trim(),
         "type": "text",
-        Constant.timeStampKey: DateTime.now().microsecondsSinceEpoch,
+        Constant.timeStampKey: DateTime.now().millisecondsSinceEpoch,
       };
 
       groupChatTextController.clear();
@@ -33,7 +33,9 @@ class GroupChatController extends GetxController{
           .collection(Constant.groupKey)
           .doc(groupData["groupId"])
           .collection(Constant.chatsKeyCollection)
-          .add(chatData);
+          .add(chatData).then((value){
+        scrollDown();
+      });
     }
   }
   void scrollDown() {
